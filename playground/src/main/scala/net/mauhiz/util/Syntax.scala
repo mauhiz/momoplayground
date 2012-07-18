@@ -37,8 +37,4 @@ object Syntax {
 	def timeOrAbort[R](maxtimeMs: Long)(block: ⇒ R): Option[R] = {
 		runWithTimeout(maxtimeMs) { time { block } }
 	}
-
-	def spawn(p: => Unit) = {
-		(new Thread { override def run = p }).start
-	}
 }
