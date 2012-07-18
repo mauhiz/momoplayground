@@ -1,9 +1,7 @@
 package net.mauhiz.util
 
-import scala.compat.Platform
-
-import scala.actors.Future
-import scala.actors.Futures._
+import scala.actors.Futures.awaitAll
+import scala.actors.Futures.future
 
 object Syntax {
 	def using[Closeable <: { def close(): Unit }, B](closeable: Closeable)(getB: Closeable ⇒ B): B = {
@@ -38,5 +36,9 @@ object Syntax {
 
 	def timeOrAbort[R](maxtimeMs: Long)(block: ⇒ R): Option[R] = {
 		runWithTimeout(maxtimeMs) { time { block } }
+	}
+
+	def spawn(p: => Unit) = {
+		(new Thread { override def run = p }).start
 	}
 }
