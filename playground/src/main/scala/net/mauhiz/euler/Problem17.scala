@@ -1,6 +1,6 @@
 package net.mauhiz.euler
 
-import net.mauhiz.util.Syntax.time
+import net.mauhiz.util.Syntax._
 
 object Problem17 extends App {
 	def toLetters(n: Int): String = {
@@ -53,7 +53,7 @@ object Problem17 extends App {
 			}
 		}
 	}
-	time {
-		println((1 to 1000).map { n: Int ⇒ toLetters(n).length }.sum)
-	}
+
+	def sol1(max: Int): Int = (1 to max).map { toLetters(_).length }.sum
+	println(sol1(1000))
 }

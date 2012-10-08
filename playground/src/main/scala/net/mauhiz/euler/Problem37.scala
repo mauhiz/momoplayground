@@ -2,6 +2,7 @@ package net.mauhiz.euler
 
 import net.mauhiz.util.{ Truncation }
 import net.mauhiz.util.Math._
+import net.mauhiz.util.prime.EratosthenesSiede
 
 object Problem37 extends App {
 

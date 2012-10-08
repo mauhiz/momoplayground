@@ -3,7 +3,8 @@ package net.mauhiz.util
 import scala.math._
 import scala.annotation.tailrec
 import scala.math.BigDecimal.RoundingMode.HALF_EVEN
-
+import java.util.LinkedList
+import scala.collection.mutable.Builder
 
 object Math {
 
@@ -41,8 +42,21 @@ object Math {
 	}
 
 	def square(n: Long) = n * n
+	def square(n: Int) = n * n
+	def square(n: BigInt) = n * n
 
 	def isOdd(n: Long) = n % 2 == 1
+
+	def gcd(a: Int, b: Int): Int = {
+		def gcd1(n: Int, d: Int): Int = {
+			d match {
+				case 0 ⇒ n
+				case _ ⇒ gcd(d, n % d)
+			}
+		}
+		gcd1(a max b, a min b)
+	}
+	def lcm(a: Int, b: Int): Int = a * (b / gcd(a, b))
 
 	val phi: Double = (1 + math.sqrt(5)) / 2
 
@@ -73,17 +87,6 @@ object Math {
 	def longStream(n: Long): Stream[Long] = n #:: longStream(n + 1)
 	lazy val longs = longStream(1)
 
-	object EratosthenesSiede extends Sieve {
-
-		lazy val primes: Stream[Long] = 2 #:: longStream(3).filter {
-			i: Long ⇒ primes.takeWhile { square(_) <= i }.forall { i % _ > 0 }
-		}
-
-		override def isPrime(n: Long): Boolean = {
-			primes.takeWhile { _ <= n }.last == n
-		}
-	}
-
 	def oddStream(n: Long): Stream[Long] = longStream(n).filter { _ % 2 == 1 }
 
 	lazy val odds: Stream[Long] = oddStream(1)
@@ -95,11 +98,5 @@ object Math {
 		1 #:: Stream.from(1).map {
 			l: Int ⇒ l * factorial(l - 1)
 		}
-	}
-
-	trait Sieve {
-		def isPrime(n: Long): Boolean
-
-		def isNotPrime(n: Long) = !isPrime(n)
 	}
 }

@@ -8,21 +8,40 @@ object Syntax {
 		try {
 			getB(closeable)
 		} finally {
-			closeable.close()
+			closeable.close
 		}
 	}
 
-	def time[R](block: ⇒ R): R = {
+	def printTime[R](block: ⇒ R): R = {
 		val start = System.nanoTime
-		try {
-			block
-		} finally {
-			System.nanoTime - start match {
-				case d if d < 1000 ⇒ println("Elapsed time: less than 1µs")
-				case d if d < 1000000 ⇒ println("Elapsed time: %.2f µs".format(d / 1000f))
-				case d if d < 1000000000 ⇒ println("Elapsed time: %.2f ms".format(d / 1000000f))
-				case d ⇒ println("Elapsed time: %.2f s".format(d / 1000000000f))
-			}
+		val R = block
+		println("Elapsed time: " + prettyPrintTime(System.nanoTime - start))
+		R
+	}
+
+	def time(block: ⇒ Unit): Long = {
+		val start = System.nanoTime
+		block
+		System.nanoTime - start
+	}
+
+	def bench(numRuns: Int)(block: ⇒ Unit): Double = {
+		(1 to numRuns).map {
+			_ ⇒ time { block }
+		}.sum.toDouble / numRuns
+	}
+
+	def printBench(numRuns: Int)(block: ⇒ Unit): Unit = {
+		val avgTime = bench(numRuns) { block }
+		println("Average run time: " + prettyPrintTime(avgTime.toLong))
+	}
+
+	def prettyPrintTime(time: Long): String = {
+		time match {
+			case d if d < 1000 ⇒ "less than 1µs"
+			case d if d < 1000000 ⇒ "%.2f µs".format(d / 1000f)
+			case d if d < 1000000000 ⇒ "%.2f ms".format(d / 1000000f)
+			case d ⇒ "%.2f s".format(d / 1000000000f)
 		}
 	}
 
@@ -35,6 +54,6 @@ object Syntax {
 	}
 
 	def timeOrAbort[R](maxtimeMs: Long)(block: ⇒ R): Option[R] = {
-		runWithTimeout(maxtimeMs) { time { block } }
+		runWithTimeout(maxtimeMs) { printTime { block } }
 	}
 }

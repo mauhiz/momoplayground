@@ -1,6 +1,7 @@
 package net.mauhiz.euler
 
 import net.mauhiz.util.Math._
+import net.mauhiz.util.prime.EratosthenesSiede
 
 object Problem46 extends App {
 	def isNotStern(n: Long): Boolean = {

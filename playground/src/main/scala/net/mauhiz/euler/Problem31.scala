@@ -1,18 +1,18 @@
 package net.mauhiz.euler
 
-object Problem31 extends App {
-  val coins = List(1, 2, 5, 10, 20, 50, 100, 200)
-  def countPossibilities(availableCoins: List[Int], moneyInPence: Int): Int = availableCoins match {
-    case head :: tail ⇒
-      if (head > moneyInPence) {
-        0
-      } else if (moneyInPence == head) {
-        1
-      } else {
-        countPossibilities(availableCoins, moneyInPence - head) + countPossibilities(tail, moneyInPence)
-      }
-    case _ ⇒ 0
-  }
+import scala.annotation.tailrec
 
-  println(countPossibilities(coins, 200))
+object Problem31 extends App {
+
+	def countPossibilities(availableCoins: List[Int], moneyInPence: Int): Int = {
+		availableCoins match {
+			case Nil ⇒ 0
+			case head :: _ if head == moneyInPence ⇒ 1
+			case head :: _ if head > moneyInPence ⇒ 0
+			case head :: tail ⇒ countPossibilities(availableCoins, moneyInPence - head) + countPossibilities(tail, moneyInPence)
+		}
+	}
+
+	val coins = List(1, 2, 5, 10, 20, 50, 100, 200)
+	println(countPossibilities(coins, 200))
 }

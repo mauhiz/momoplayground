@@ -1,13 +1,11 @@
 package net.mauhiz.euler
 
 object Problem29 extends App {
-  val d = (2 to 100).flatMap {
-    a: Int ⇒
-      (2 to 100)
-        .map {
-          b: Int ⇒
-            BigInt(a).pow(b)
-        }
-  }.distinct
-  println(d.size)
+	def sol(max: Int): Int = {
+		val rang = 2 to max
+		val d = for (a ← rang; b ← rang) yield BigInt(a).pow(b)
+		d.distinct.size
+	}
+
+	println(sol(100))
 }

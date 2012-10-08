@@ -1,11 +1,11 @@
 package net.mauhiz.codechef
 
-import net.mauhiz.util.Math._
+import net.mauhiz.util.Math.factorial
 
 object FCTRL2 extends App {
 
-	(1 to readLine.toInt).foreach {
-		i: Int ⇒
-			println(factorial(readLine.toInt))
+	val T = readLine.toInt
+	for (_ ← 1 to T) {
+		println(factorial(readLine.toInt))
 	}
 }

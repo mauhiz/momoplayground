@@ -1,13 +1,15 @@
 package net.mauhiz.codechef
 
 object CMB01 extends App {
-  val cases = 1 to readLine.toInt
-  cases.foreach {
-    i: Int ⇒
-      val inputs = readLine.split(" ")
-      val reversedInputs = inputs.map(_ reverse)
-      val sumOfReversedInputs = reversedInputs.map(_ toInt).foldLeft(0)(_ + _)
-      val r = sumOfReversedInputs.toString.reverse
-      println(r)
-  }
+	val T = readLine.toInt
+	for (_ ← 1 to T) {
+		val inputs = readLine.split(" ")
+		println(cmb01(inputs))
+	}
+
+	// reversered sum of reversed inputs
+	def cmb01(inputs: Array[String]): String = {
+		val reversedInputs = inputs.map { _.reverse.toInt }
+		reversedInputs.sum.toString.reverse
+	}
 }

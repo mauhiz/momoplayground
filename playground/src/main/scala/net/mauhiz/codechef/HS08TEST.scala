@@ -1,16 +1,14 @@
 package net.mauhiz.codechef
 
 object HS08TEST extends App {
-  val input = readLine.split(" ")
-  val withdrawAmount = input.head.toInt
-  if (withdrawAmount % 5 != 0) {
-    println(input.tail)
-  } else {
-    val balance = input.last.toDouble
-    if (withdrawAmount > balance) {
-      println(input.tail)
-    } else {
-      println((balance - withdrawAmount).formatted("%.2f"))
-    }
-  }
+	val input = readLine.split(" ")
+	println(hs08(input(0).toInt, input(1).toDouble))
+
+	def hs08(withdrawAmount: Int, balance: Double): String = {
+		withdrawAmount match {
+			case x if x % 5 != 0 ⇒ balance.toString
+			case x if x > balance ⇒ balance.toString
+			case x ⇒ (balance - x).formatted("%.2f")
+		}
+	}
 }

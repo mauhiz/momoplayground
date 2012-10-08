@@ -1,6 +1,8 @@
 package net.mauhiz.euler
 
 import scala.annotation.tailrec
+import scala.math.Numeric
+import math.Numeric.Implicits._
 
 object Problem18 extends App {
 	val s = """75
@@ -20,24 +22,30 @@ object Problem18 extends App {
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 		"""
 
-	def toGrid(s: String): List[List[Int]] = s.trim.split("\n").toList.map {
-		line: String ⇒
-			line.split("\\s+").map {
-				token: String ⇒ token.toInt
-			}.toList
-	}
-	val grid = toGrid(s)
-
-	@tailrec
-	def f(rows: List[List[Int]], bottom: Seq[Int]): Int = {
-		val ms = bottom.zip(bottom.tail).map { p ⇒ p._1 max p._2 }
-		val ss = rows.last.zip(ms).map { p ⇒ p._1 + p._2 }
-		if (ss.size == 1) {
-			ss.head
-		} else {
-			f(rows.init, ss)
+	def toGrid(s: String) = {
+		val lines = s.trim.split("\n").toIndexedSeq
+		lines.map {
+			_.split("\\s+").map { _.toInt }.toIndexedSeq
 		}
 	}
 
-	println(f(grid.init, grid.last))
+	def tupleSum(t: Tuple2[Int, Int]) = t._1 + t._2
+	def tupleMax(t: Tuple2[Int, Int]) = t._1 max t._2
+
+	def f(grid: IndexedSeq[IndexedSeq[Int]]): Int = {
+		@tailrec
+		def f(rows: IndexedSeq[IndexedSeq[Int]], bottom: IndexedSeq[Int]): Int = {
+			val ms = bottom.zip(bottom.tail).map { tupleMax }
+
+			val lastRow = rows.last
+			val ss = lastRow.zip(ms).map { tupleSum }
+			ss match {
+				case x if x.size == 1 ⇒ ss.head
+				case _ ⇒ f(rows.init, ss)
+			}
+		}
+		f(grid.init, grid.last)
+	}
+
+	println(f(toGrid(s)))
 }
